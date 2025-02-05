@@ -31,3 +31,6 @@
 [submodule "screencap2tesseract2csv"]
 	path = screencap2tesseract2csv
 	url = https://github.com/hansalemaos/screencap2tesseract2csv.git
+[submodule "termuxtoadb"]
+	path = termuxtoadb
+	url = https://github.com/hansalemaos/termuxtoadb.git
