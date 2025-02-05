@@ -1,0 +1,33 @@
+[submodule "uiautomator_dump_without_could_not_detect_idle_state"]
+	path = uiautomator_dump_without_could_not_detect_idle_state
+	url = https://github.com/hansalemaos/uiautomator_dump_without_could_not_detect_idle_state.git
+[submodule "uiautomator_dump_to_csv"]
+	path = uiautomator_dump_to_csv
+	url = https://github.com/hansalemaos/uiautomator_dump_to_csv.git
+[submodule "sendevent_multicommands_type_text"]
+	path = sendevent_multicommands_type_text
+	url = https://github.com/hansalemaos/sendevent_multicommands_type_text.git
+[submodule "mouse_sendevent_android"]
+	path = mouse_sendevent_android
+	url = https://github.com/hansalemaos/mouse_sendevent_android.git
+[submodule "getevent_keydumper_linux"]
+	path = getevent_keydumper_linux
+	url = https://github.com/hansalemaos/getevent_keydumper_linux.git
+[submodule "getevent_pretty_print_linux"]
+	path = getevent_pretty_print_linux
+	url = https://github.com/hansalemaos/getevent_pretty_print_linux.git
+[submodule "android_fragment_parser"]
+	path = android_fragment_parser
+	url = https://github.com/hansalemaos/android_fragment_parser.git
+[submodule "uiautomator_eventsparser_cpp"]
+	path = uiautomator_eventsparser_cpp
+	url = https://github.com/hansalemaos/uiautomator_eventsparser_cpp.git
+[submodule "elparse"]
+	path = elparse
+	url = https://github.com/hansalemaos/elparse.git
+[submodule "uiautomator2tocsv"]
+	path = uiautomator2tocsv
+	url = https://github.com/hansalemaos/uiautomator2tocsv.git
+[submodule "screencap2tesseract2csv"]
+	path = screencap2tesseract2csv
+	url = https://github.com/hansalemaos/screencap2tesseract2csv.git
