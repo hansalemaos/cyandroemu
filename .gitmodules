@@ -37,3 +37,6 @@
 [submodule "termux_autostart"]
 	path = termux_autostart
 	url = https://github.com/hansalemaos/termux_autostart.git
+[submodule "python_autostart_debug"]
+	path = python_autostart_debug
+	url = https://github.com/hansalemaos/python_autostart_debug.git
