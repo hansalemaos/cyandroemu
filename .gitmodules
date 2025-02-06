@@ -40,3 +40,6 @@
 [submodule "python_autostart_debug"]
 	path = python_autostart_debug
 	url = https://github.com/hansalemaos/python_autostart_debug.git
+[submodule "python_autostart_no_debug"]
+	path = python_autostart_no_debug
+	url = https://github.com/hansalemaos/python_autostart_no_debug.git
