@@ -82,6 +82,7 @@ Unlike any other Android automation library, **CyAndroEmu** is designed to run *
   * [MuMuPlayer](https://www.mumuplayer.com/)
   * [GenyMotion](https://www.genymotion.com/)
   * [Nox Player](https://pt.bignox.com/)
+  * [Android Studio - Magisk Patched PlayStore API 30 - Android 11](https://developer.android.com/studio)
 
 **Although neither [Magisk](https://github.com/topjohnwu/Magisk) nor [KernelSU](https://kernelsu.org/) is required, using them can significantly simplify tasks such as [running Python scripts at Android startup](https://github.com/hansalemaos/python_autostart_debug/tree/220d88549687375e53ec6cf3e7f9641553cc4375) and automatically [adding the Termux folder to the PATH when accessing the ADB shell ](https://github.com/hansalemaos/termuxtoadb/tree/bd119fd61ed8c60e399f81de26a1e202c2a5ffa3) . They also assist in hiding root access and automating actions - [writing your own Plugins is really simple](https://topjohnwu.github.io/Magisk/guides.html). [Here are some of my tutorials in Portuguese/English](https://github.com/hansalemaos/install_python_on_android_emulators) that teach you how to install them:**
 
@@ -1972,8 +1973,7 @@ get_df_lsof(self, timeout=1000000)
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add template matching using https://www.fftw.org/ without other dependencies, something like [needlefinder]
- (https://github.com/hansalemaos/needlefinder) but without scipy
+- [ ] Add template matching using https://www.fftw.org/ without other dependencies, something like [needlefinder](https://github.com/hansalemaos/needlefinder) but without scipy
 - [ ] Add more useful commands to the interactive shell
 - [ ] Support for Accelerated [Hierarchical Density Clustering in C++](https://github.com/rohanmohapatra/hdbscan-cpp/issues/11)
 
