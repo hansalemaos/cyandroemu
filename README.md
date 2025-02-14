@@ -17,7 +17,7 @@
 
 ## About The Project
 
-**CyAndroEmu** is a powerful [**Python**](https://www.python.org/) library designed for advanced Android automation. For performance reasons, it’s primarily written in [**C++**](https://cplusplus.com/) and [**Cython**](https://cython.readthedocs.io/), providing multiple backends for interacting with UI elements, handling input events, and efficiently extracting screen data.
+**CyAndroEmu** is a powerful [**Python**](https://www.python.org/) library designed for advanced Android automation. For performance reasons, it’s primarily written in [**C++**](https://cplusplus.com/) and [**Cython**](https://cython.readthedocs.io/) (Line count: C++ - 20229 lines /  Python - 2960 lines / Cython:  9397 lines), providing multiple backends for interacting with UI elements, handling input events, and efficiently extracting screen data.
 
 Unlike any other Android automation library, **CyAndroEmu** is designed to run **directly and independently** on the emulator or rooted device **without relying on ADB**. This architecture offers significant performance and reliability advantages.
 
