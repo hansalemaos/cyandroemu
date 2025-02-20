@@ -370,7 +370,13 @@ The C++ Tesseract parser captures a screenshot using screencap, converts the ima
 #### `uiautomator2_download_link1: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator-test.apk"`
 #### `uiautomator2_download_link2: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator.apk"`
 
-Backups APKs from the [Uiautomator2 project](https://github.com/openatx/uiautomator2). In most cases, there’s no need to modify this url.
+Backups APKs from the [Uiautomator2 project](https://github.com/openatx/uiautomator2). 
+
+You can also use my modified version which shows all hidden elements (good for web scraping)
+
+`https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator-test_with_hidden_elements.apk`
+
+`https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator_with_hidden_elements.apk`
 
 
 ***
