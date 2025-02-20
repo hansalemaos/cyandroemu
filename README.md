@@ -479,7 +479,7 @@ te = TermuxAutomation(
     screen_width=screen_width,
 )
 # Clean up any leftover background processes (e.g., uiautomator2 server) from earlier automations.
-# atexit should handle this, but "Doppelt genäht hält besser :)" (German proverb - double-stitched holds better).
+# atexit should handle this, but "Doppelt genaeht haelt besser :)" (German proverb - double-stitched holds better).
 
 te.kill_zombies()
 ```
