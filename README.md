@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/hansalemaos/cyandroemu">
     <img src="images/logo.png" alt="Logo" width="400" height="400">
   </a>
 
