@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/hansalemaos/cyandroemu">
-    <img src="images/logo.png" alt="Logo" width="400" height="400">
+    <img src="https://github.com/hansalemaos/cyandroemu/blob/main/images/logo.png?raw=true" alt="Logo" width="400" height="400">
   </a>
 
   <h3 align="center">Python / Cython Automation for Android Emulators</h3>
