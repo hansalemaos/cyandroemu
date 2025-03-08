@@ -25,6 +25,12 @@ from struct import Struct
 import zipfile
 from contextlib import suppress as contextlib_suppress
 #re.cache_all(True)
+from random import randint as random_randint
+from time import sleep as timesleep
+from unicodedata import name as unicodedata_name
+from string import printable as string_printable
+from pandas import DataFrame as pd_DataFrame
+
 import warnings
 warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 
@@ -40,6 +46,190 @@ ctypedef struct color_rgb_with_coords_and_count:
 ctypedef vector[color_rgb_with_coords_and_count] vec_rgbxycount
 
 cdef:
+    dict letter_lookup_dict = {}
+    dict[str,bytes] latin_keycombination = {
+
+        # ascii
+
+        "!":b"input text '!'",
+        '"':b"""input text '"'""",
+        "#":b"input text '#'",
+        "$":b"input text '$'",
+        "%":b"input text '%'",
+        "&":b"input text '&'",
+        "'":b'''input text "'"''',
+        "(":b"input text '('",
+        ")":b"input text ')'",
+        "*":b"input text '*'",
+        "+":b"input text '+'",
+        ",":b"input text ','",
+        "-":b"input text '-'",
+        ".":b"input text '.'",
+        "/":b"input text '/'",
+        "0":b"input text '0'",
+        "1":b"input text '1'",
+        "2":b"input text '2'",
+        "3":b"input text '3'",
+        "4":b"input text '4'",
+        "5":b"input text '5'",
+        "6":b"input text '6'",
+        "7":b"input text '7'",
+        "8":b"input text '8'",
+        "9":b"input text '9'",
+        ":":b"input text ':'",
+        ";":b"input text ';'",
+        "<":b"input text '<'",
+        "=":b"input text '='",
+        ">":b"input text '>'",
+        "?":b"input text '?'",
+        "@":b"input text '@'",
+        "A":b"input text 'A'",
+        "B":b"input text 'B'",
+        "C":b"input text 'C'",
+        "D":b"input text 'D'",
+        "E":b"input text 'E'",
+        "F":b"input text 'F'",
+        "G":b"input text 'G'",
+        "H":b"input text 'H'",
+        "I":b"input text 'I'",
+        "J":b"input text 'J'",
+        "K":b"input text 'K'",
+        "L":b"input text 'L'",
+        "M":b"input text 'M'",
+        "N":b"input text 'N'",
+        "O":b"input text 'O'",
+        "P":b"input text 'P'",
+        "Q":b"input text 'Q'",
+        "R":b"input text 'R'",
+        "S":b"input text 'S'",
+        "T":b"input text 'T'",
+        "U":b"input text 'U'",
+        "V":b"input text 'V'",
+        "W":b"input text 'W'",
+        "X":b"input text 'X'",
+        "Y":b"input text 'Y'",
+        "Z":b"input text 'Z'",
+        "[":b"input text '['",
+        "\\":b"input text '\\'",
+        "]":b"input text ']'",
+        "^":b"input text '^'",
+        "_":b"input text '_'",
+        "`":b"input text '`'",
+        "a":b"input text 'a'",
+        "b":b"input text 'b'",
+        "c":b"input text 'c'",
+        "d":b"input text 'd'",
+        "e":b"input text 'e'",
+        "f":b"input text 'f'",
+        "g":b"input text 'g'",
+        "h":b"input text 'h'",
+        "i":b"input text 'i'",
+        "j":b"input text 'j'",
+        "k":b"input text 'k'",
+        "l":b"input text 'l'",
+        "m":b"input text 'm'",
+        "n":b"input text 'n'",
+        "o":b"input text 'o'",
+        "p":b"input text 'p'",
+        "q":b"input text 'q'",
+        "r":b"input text 'r'",
+        "s":b"input text 's'",
+        "t":b"input text 't'",
+        "u":b"input text 'u'",
+        "v":b"input text 'v'",
+        "w":b"input text 'w'",
+        "x":b"input text 'x'",
+        "y":b"input text 'y'",
+        "z":b"input text 'z'",
+        "{":b"input text '{'",
+        "|":b"input text '|'",
+        "}":b"input text '}'",
+        "~":b"input text '~'",
+
+        # https://www.ut.edu/academics/college-of-arts-and-letters/department-of-languages-and-linguistics/typing-accented-characters
+        # á, é, í, ó, ú, ý, Á, É, Í, Ó, Ú, Ý
+        "á":b"input keycombination 58 33;input text 'a'",
+        "é":b"input keycombination 58 33;input text 'e'",
+        "í":b"input keycombination 58 33;input text 'i'",
+        "ó":b"input keycombination 58 33;input text 'o'",
+        "ú":b"input keycombination 58 33;input text 'u'",
+        "ý":b"input keycombination 58 33;input text 'y'",
+        "Á":b"input keycombination 58 33;input text 'A'",
+        "É":b"input keycombination 58 33;input text 'E'",
+        "Í":b"input keycombination 58 33;input text 'I'",
+        "Ó":b"input keycombination 58 33;input text 'O'",
+        "Ú":b"input keycombination 58 33;input text 'U'",
+        "Ý":b"input keycombination 58 33;input text 'Y'",
+
+        # ç, Ç
+        "Ç" :b"input keycombination 59 57 31",
+        "ç" :b"input keycombination 57 31",
+
+        # â, ê, î, ô, û, Â, Ê, Î, Ô, Û
+        "â":b"input keycombination 57 37;input text 'a'",
+        "ê":b"input keycombination 57 37;input text 'e'",
+        "î":b"input keycombination 57 37;input text 'i'",
+        "ô":b"input keycombination 57 37;input text 'o'",
+        "û":b"input keycombination 57 37;input text 'u'",
+        "Â":b"input keycombination 57 37;input text 'A'",
+        "Ê":b"input keycombination 57 37;input text 'E'",
+        "Î":b"input keycombination 57 37;input text 'I'",
+        "Ô":b"input keycombination 57 37;input text 'O'",
+        "Û":b"input keycombination 57 37;input text 'U'",
+
+        # ã, ñ, õ, Ã, Ñ, Õ
+        "ã":b"input keycombination 57 42;input text 'a'",
+        "ñ":b"input keycombination 57 42;input text 'n'",
+        "õ":b"input keycombination 57 42;input text 'o'",
+        "Ã":b"input keycombination 57 42;input text 'A'",
+        "Ñ":b"input keycombination 57 42;input text 'N'",
+        "Õ":b"input keycombination 57 42;input text 'O'",
+
+        # ß, ẞ
+        "ß": b"input keycombination 57 47",
+        "ẞ": b"input keycombination 59 57 47",
+
+        # ä, ë, ï, ö, ü, ÿ, Ä, Ë, Ï, Ö, Ü, Ÿ
+        "ä":b"input keycombination 57 49;input text 'a'",
+        "ë":b"input keycombination 57 49;input text 'e'",
+        "ï":b"input keycombination 57 49;input text 'i'",
+        "ö":b"input keycombination 57 49;input text 'o'",
+        "ü":b"input keycombination 57 49;input text 'u'",
+        "ÿ":b"input keycombination 57 49;input text 'y'",
+        "Ä":b"input keycombination 57 49;input text 'A'",
+        "Ë":b"input keycombination 57 49;input text 'E'",
+        "Ï":b"input keycombination 57 49;input text 'I'",
+        "Ö":b"input keycombination 57 49;input text 'O'",
+        "Ü":b"input keycombination 57 49;input text 'U'",
+        "Ÿ":b"input keycombination 57 49;input text 'Y'",
+
+        # à, è, ì, ò, ù, À, È, Ì, Ò, Ù
+        "à":b"input keycombination 57 68;input text 'a'",
+        "è":b"input keycombination 57 68;input text 'e'",
+        "ì":b"input keycombination 57 68;input text 'i'",
+        "ò":b"input keycombination 57 68;input text 'o'",
+        "ù":b"input keycombination 57 68;input text 'u'",
+        "À":b"input keycombination 57 68;input text 'A'",
+        "È":b"input keycombination 57 68;input text 'E'",
+        "Ì":b"input keycombination 57 68;input text 'I'",
+        "Ò":b"input keycombination 57 68;input text 'O'",
+        "Ù":b"input keycombination 57 68;input text 'U'",
+
+        #todo
+        "å":b"input text 'a'",
+        "Å":b"input text 'a'",
+        "æ":b"input text 'ae'",
+        "Æ":b"input text 'Ae'",
+        "œ":b"input text 'oe'",
+        "Œ":b"input text 'Oe'",
+        "ð":b"input text 'd'",
+        "Ð":b"input text 'D'",
+        "ø":b"input text 'o'",
+        "Ø":b"input text 'O'",
+        "¿":b"input text '?'",
+        "¡":b"input text '!'",
+
+    }
     int SIG_BOOLEAN = ord("Z")
     int SIG_BYTE = ord("B")
     int SIG_SHORT = ord("S")
@@ -82,7 +272,7 @@ cdef:
     ).unpack
     string cpp_distance_metric=<string>b"Euclidean"
     dict[object,str] cache_tesseract={}
-    dict[object,object] cache_apply_literal_eval_to_tuple
+    dict cache_apply_literal_eval_to_tuple={}
     string str_NEWLINE=<string>b"\n"
     int MAX_32BIT_INT_VALUE=2147483647
     string str_REPLACE_XCOORD = <string>b"REPLACE_XCOORD"
@@ -696,7 +886,7 @@ def pdp(
 def print_col_width_len(df):
     try:
         pdp(
-            pd.DataFrame(
+            pd_DataFrame(
                 [df.shape[0], df.shape[1]], index=["rows", "columns"]
             ).T.rename(
                 {0: "DataFrame"},
@@ -704,18 +894,22 @@ def print_col_width_len(df):
         )
     except Exception:
         pdp(
-            pd.DataFrame([df.shape[0]], index=["rows"]).T.rename({0: "Series"}),
+            pd_DataFrame([df.shape[0]], index=["rows"]).T.rename({0: "Series"}),
         )
 
 
 def pandasprintcolor(self):
-    pdp(pd.DataFrame(self.reset_index().__array__(), columns=['index']+[str(x) for x in self.columns],copy=False))
+    pdp(pd_DataFrame(self.reset_index().__array__(), columns=['index']+[str(x) for x in self.columns],copy=False))
     print_col_width_len(self.__array__())
 
     return ""
 
 
 def copy_func(f):
+    cdef:
+        object g
+        list[str] t
+        Py_ssize_t i
     g = lambda *args: f(*args)
     t = list(filter(lambda prop: not ("__" in prop), dir(f)))
     i = 0
@@ -729,7 +923,7 @@ def pandasprintcolor_s(self):
     return pandasprintcolor(self.to_frame())
 
 def pandasindexcolor(self):
-    pdp(pd.DataFrame(self.__array__()[: self.print_stop].reshape((-1, 1))))
+    pdp(pd_DataFrame(self.__array__()[: self.print_stop].reshape((-1, 1))))
     return ""
 
 
@@ -784,7 +978,7 @@ def substitute_print_with_color_print(
 def qq_ds_print_nolimit(self, **kwargs):
     try:
         pdp(
-            pd.DataFrame(self.reset_index().__array__(), columns=['index']+[str(x) for x in self.columns],copy=False),
+            pd_DataFrame(self.reset_index().__array__(), columns=['index']+[str(x) for x in self.columns],copy=False),
             max_lines=0,
             **kwargs,
         )
@@ -792,12 +986,12 @@ def qq_ds_print_nolimit(self, **kwargs):
     except Exception:
         try:
             pdp(
-                pd.DataFrame(self.reset_index().__array__(), columns=['index',self.name],copy=False),
+                pd_DataFrame(self.reset_index().__array__(), columns=['index',self.name],copy=False),
                 max_lines=0,
             )
         except Exception:
             pdp(
-                pd.DataFrame(self.__array__(),copy=False),
+                pd_DataFrame(self.__array__(),copy=False),
                 max_lines=0,
             )
         print_col_width_len(self.__array__())
@@ -806,7 +1000,7 @@ def qq_ds_print_nolimit(self, **kwargs):
 
 def qq_d_print_columns(self, **kwargs):
     pdp(
-        pd.DataFrame(self.columns.__array__().reshape((-1, 1))),
+        pd_DataFrame(self.columns.__array__().reshape((-1, 1))),
         max_colwidth=0,
         max_lines=0,
         **kwargs,
@@ -815,12 +1009,11 @@ def qq_d_print_columns(self, **kwargs):
 
 
 def qq_ds_print_index(self, **kwargs):
-    pdp(pd.DataFrame(self.index.__array__().reshape((-1, 1))),    max_lines=0, max_colwidth=0, **kwargs)
+    pdp(pd_DataFrame(self.index.__array__().reshape((-1, 1))),    max_lines=0, max_colwidth=0, **kwargs)
     return ""
 
 
 def add_printer(overwrite_pandas_printer=False):
-
     PandasObject.ds_color_print_all = qq_ds_print_nolimit
     DataFrame.d_color_print_columns = qq_d_print_columns
     DataFrame.d_color_print_index = qq_ds_print_index
@@ -843,7 +1036,7 @@ cdef string convert_python_object_to_cpp_string(object shell_command):
         cpp_shell_command=<string>(tmp_bytes)
     return cpp_shell_command
 
-
+@cython.final
 cdef class CySubProc:
     cdef ShellProcessManager*subproc
 
@@ -918,7 +1111,7 @@ cdef int convert_to_int(object o, int nan_val=0):
     except Exception:
         return nan_val
 
-
+@cython.final
 cdef class InputClick:
     cdef:
         int x
@@ -956,7 +1149,7 @@ cdef class InputClick:
     def __repr__(self):
         return self.__str__()
 
-
+@cython.final
 cdef class SendEventClick:
     cdef:
         int x
@@ -1064,7 +1257,7 @@ cdef class SendEventClick:
     def __repr__(self):
         return self.__str__()
 
-
+@cython.final
 cdef class MouseAction:
     cdef:
         int x
@@ -1220,6 +1413,8 @@ def add_events_to_dataframe(
             axis=1,
         )
 
+
+@cython.boundscheck(True)
 cdef object get_fragment_data(
     str android_fragment_parser_exe="/data/data/com.termux/files/usr/bin/android_fragment_parser/a.out",
     int timeout=30,
@@ -1259,9 +1454,9 @@ cdef object get_fragment_data(
         return dff
     except Exception:
         errwrite()
-        return pd.DataFrame()
+        return pd_DataFrame()
 
-
+@cython.final
 cdef class FragMentDumper:
     cdef:
         str android_fragment_parser_exe
@@ -1409,7 +1604,7 @@ cdef class FragMentDumper:
             df.loc[:, "aa_screenshot"] = get_part_of_screenshot(cmd="screencap", width=self.screen_width, height=self.screen_height, coords=list(zip(df["aa_start_x"], df["aa_start_y"], df["aa_end_x"], df["aa_end_y"])))
         return df
 
-
+@cython.final
 cdef class LcpParser:
     cdef:
         CySubProc p
@@ -1603,7 +1798,7 @@ cdef class LcpParser:
             ).reset_index(drop=True)
         except Exception:
             errwrite()
-            return pd.DataFrame()
+            return pd_DataFrame()
         try:
             add_events_to_dataframe(
                     df,
@@ -1662,24 +1857,29 @@ cdef class LcpParser:
             bytes _ = self.p.get_stdout()
         pass
 
-def apply_literal_eval_to_tuple(object x):
+@cython.nonecheck(True)
+cpdef apply_literal_eval_to_tuple(object x):
     cdef:
-        object result
+        object result = ()
     if not x:
+        return ()
+    if pdisna(x):
         return ()
     try:
         if x in cache_apply_literal_eval_to_tuple:
             return cache_apply_literal_eval_to_tuple[x]
     except Exception:
-        return ()
+        pass
     try:
-        result=literal_eval(x)
+        result = literal_eval(x)
     except Exception:
-        result=()
-    cache_apply_literal_eval_to_tuple[x]=result
+        result = ()
+    if isinstance(result, int):
+        result = (result,)
+    cache_apply_literal_eval_to_tuple[x] = result
     return result
 
-
+@cython.boundscheck(True)
 cdef object get_ui2_data(
     str csv_parser_exe="/data/data/com.termux/files/usr/bin/uiautomator2tocsv/a.out",
     int timeout=30,
@@ -1720,10 +1920,10 @@ cdef object get_ui2_data(
         return dff
     except Exception:
         errwrite()
-        return pd.DataFrame()
+        return pd_DataFrame()
 
 
-
+@cython.final
 cdef class UiAutomator2:
     cdef:
         str sh_exe
@@ -2151,6 +2351,8 @@ cdef object tesser_group_words(
     df.rename(columns={"aa_text": "aa_word"}, inplace=True)
     return df.rename(columns={"aa_text_line": "aa_text"}, inplace=False)
 
+
+@cython.final
 cdef class Screencap2Tesseract:
     cdef:
         str exe_path
@@ -2241,6 +2443,7 @@ cdef class Screencap2Tesseract:
         self.imagemagick_args = imagemagick_args
         self.path_outpic=path_outpic
 
+    @cython.boundscheck(True)
     def get_df(
         self,
         bint with_screenshot=True,
@@ -2319,7 +2522,7 @@ cdef class Screencap2Tesseract:
         )
         except Exception:
             errwrite()
-            return pd.DataFrame()
+            return pd_DataFrame()
         df=tesser_group_words(
             df=df,
             limit_x = word_group_limit,
@@ -2389,6 +2592,7 @@ cdef class Screencap2Tesseract:
             df.loc[:, "aa_screenshot"] = get_part_of_screenshot(cmd="screencap", width=self.screen_width, height=self.screen_height, coords=list(zip(df["aa_start_x"], df["aa_start_y"], df["aa_end_x"], df["aa_end_y"])))
         return df
 
+@cython.final
 cdef class UiAutomatorClassic:
     cdef:
         str uiautomator_parser
@@ -2515,7 +2719,7 @@ cdef class UiAutomatorClassic:
             )
         except Exception:
             errwrite()
-            return pd.DataFrame()
+            return pd_DataFrame()
         try:
             add_events_to_dataframe(
             df,
@@ -2568,6 +2772,7 @@ cdef class UiAutomatorClassic:
             df.loc[:, "aa_screenshot"] = get_part_of_screenshot(cmd="screencap", width=self.screen_width, height=self.screen_height, coords=list(zip(df["aa_start_x"], df["aa_start_y"], df["aa_end_x"], df["aa_end_y"])))
         return df
 
+@cython.final
 cdef class UiAutomatorClassicWithCPULimit:
     cdef:
         int cpu_limit
@@ -2643,6 +2848,7 @@ cdef class UiAutomatorClassicWithCPULimit:
         self.dump_path = dump_path
         self.cpu_limit = cpu_limit
 
+    @cython.boundscheck(True)
     def get_df(
         self,
         bint with_screenshot=True,
@@ -2697,7 +2903,7 @@ cdef class UiAutomatorClassicWithCPULimit:
             )
         except Exception:
             errwrite()
-            return pd.DataFrame()
+            return pd_DataFrame()
 
         try:
             add_events_to_dataframe(
@@ -2920,6 +3126,7 @@ def parse_window_elements_to_list(
             result_dicts.append([parsedata(sbytes=zipname_zipdata[zip_index][1]),zipname_zipdata[zip_index][0]])
     return result_dicts
 
+@cython.final
 cdef class WindowDumper:
     cdef:
         str android_fragment_parser_exe
@@ -3019,7 +3226,7 @@ cdef class WindowDumper:
     ):
 
         cdef:
-            object df2,q,df1
+            object df2,q,df1, df
             Py_ssize_t qidx,counter,last_index_alldata,mydata,each_key,i,j
             dict mappingdict,mapping_dict,rename_dict
             str newkey
@@ -3028,6 +3235,7 @@ cdef class WindowDumper:
             np.ndarray hashcodes_df1_full, hashcodes_df2_full
             int64_t[:] hashcodes_df1,hashcodes_df2
             bint isgood
+        df=pd_DataFrame()
         df2=get_fragment_data(
         android_fragment_parser_exe=self.android_fragment_parser_exe,
         timeout=timeout if timeout else self.timeout,
@@ -3122,7 +3330,7 @@ cdef class WindowDumper:
                     for each_key in range(len(allpossible_keys)):
                         if allpossible_keys[each_key] not in mapping_dict[key]:
                             mapping_dict[key][allpossible_keys[each_key]] = None
-                df1 = pd.DataFrame.from_dict(mapping_dict, orient="index")
+                df1 = pd_DataFrame.from_dict(mapping_dict, orient="index")
                 hashcodes_df1_full = df1["aa_hashcode_int"].fillna(-1).astype(np.int64).__array__()
                 hashcodes_df2_full = df2["aa_hashcode_int"].astype(np.int64).__array__()
                 hashcodes_df1=hashcodes_df1_full
@@ -3170,7 +3378,7 @@ cdef class WindowDumper:
             if len(alldfs)>0:
                 df=alldfs[0]
             else:
-                return pd.DataFrame()
+                return pd_DataFrame()
             df["aa_hashcode_hex"]=df.index.__array__().copy()
             df=df.reset_index(drop=True)
             add_events_to_dataframe(
@@ -3223,3 +3431,84 @@ cdef class WindowDumper:
         if with_screenshot:
             df.loc[:, "aa_screenshot"] = get_part_of_screenshot(cmd="screencap", width=self.screen_width, height=self.screen_height, coords=list(zip(df["aa_start_x"], df["aa_start_y"], df["aa_end_x"], df["aa_end_y"])))
         return df
+
+
+cdef str letter_normalize_lookup(
+    str l, bint case_sens= True, str replace= "", str add_to_printable = ""
+):
+    cdef:
+        object index_tuple
+        list v
+        str sug,stri_pri
+        bint is_printable_letter,is_printable,is_capital
+    index_tuple = (l, case_sens, replace, add_to_printable)
+    if index_tuple in letter_lookup_dict:
+        return letter_lookup_dict[index_tuple]
+
+    v = sorted(unicodedata_name(l).split(), key=len)
+    sug = replace
+    stri_pri = string_printable + add_to_printable.upper()
+    is_printable_letter = v[0] in stri_pri
+    is_printable = l in stri_pri
+    is_capital = "CAPITAL" in v
+    if is_printable_letter:
+        sug = v[0]
+
+        if case_sens:
+            if not is_capital:
+                sug = v[0].lower()
+    elif is_printable:
+        sug = l
+    letter_lookup_dict[index_tuple] = sug
+    return sug
+
+cdef int random_int_function(int minint, int maxint):
+    if maxint > minint:
+        return random_randint(minint, maxint)
+    return minint
+
+
+@cython.final
+cdef class UnicodeInputText:
+    cdef:
+        str text
+        list[bytes] normalized_text
+        bint send_each_letter_separately
+        dict kwargs
+        str cached_str
+        bytes cached_bytes
+        str cmd
+    def __init__(self,str sh_exe, str text, bint send_each_letter_separately, object kwargs=None):
+        self.text = text
+        self.normalized_text = [f"input text '{letter_normalize_lookup(x)}'".encode() if x not in latin_keycombination else latin_keycombination[x] for x in text]
+        self.cmd = sh_exe
+        self.send_each_letter_separately = send_each_letter_separately
+        self.kwargs = kwargs if kwargs is not None else {}
+        self.cached_str = ""
+        self.cached_bytes=b""
+
+    def __str__(self):
+        if not self.cached_str:
+            self.cached_str=(b'\n'.join(self.normalized_text)).decode("utf-8","ignore")
+        return self.cached_str
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __call__(self, int min_press=1, int max_press=4):
+        cdef:
+            bytes letter
+        if self.send_each_letter_separately:
+            for letter in self.normalized_text:
+                subprocess_run(
+                    letter.decode(),
+                    **{"env": os_environ, **self.kwargs, "shell": True},
+                )
+                timesleep(float(random_int_function(min_press, max_press)) / 1000)
+        else:
+            if not self.cached_bytes:
+                self.cached_bytes=b'\n'.join(self.normalized_text)
+            subprocess_run(
+                self.cmd,
+                **{"env": os_environ, **self.kwargs,"input":self.cached_bytes, "shell": True},
+            )

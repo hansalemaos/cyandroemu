@@ -11,6 +11,8 @@ from string import printable as string_printable
 from random import randint as random_randint
 from os import environ as os_environ
 from subprocess import run as subprocess_run
+import cython
+cimport cython
 
 cdef extern from "subprocstuff.hpp" nogil :
     void os_system(string &command)
@@ -29,7 +31,7 @@ cdef string convert_python_object_to_cpp_string(object shell_command):
         cpp_shell_command=<string>(tmp_bytes)
     return cpp_shell_command
 
-
+@cython.final
 cdef class KeyCodePresser:
     cdef:
         str system_bin_path
@@ -2059,6 +2061,7 @@ cpdef int random_int_function(int minint, int maxint):
         return random_randint(minint, maxint)
     return minint
 
+@cython.final
 cdef class SendEventWrite:
     cdef:
         str exefile
@@ -2111,7 +2114,7 @@ cdef class SendEventWrite:
             )
         return self.exefile + " " + self.device_path + " " + "#".join(commands)
 
-
+@cython.final
 cdef class InputText:
     #__slots__ = ("text", "normalized_text", "cmd", "send_each_letter_separately")
     cdef:

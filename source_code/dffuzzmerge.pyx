@@ -87,7 +87,7 @@ cdef:
     string emptystring = <string>b""
     vector[string] emptystringvec = [b""]
 
-
+@cython.final
 cdef class PyStringMatcher:
     cdef:
         StringMatcher*sm

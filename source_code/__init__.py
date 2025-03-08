@@ -613,8 +613,8 @@ class TermuxAutomation:
         tesseract_args: str = '"-l por+eng --oem 3"',
         imagemagick_args: object = None,
         tesseract_path_outpic: str = "/sdcard/screenshot.ppm",
-        uiautomator2_download_link1: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator-test.apk",
-        uiautomator2_download_link2: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator.apk",
+        uiautomator2_download_link1: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator-test_with_hidden_elements.apk",
+        uiautomator2_download_link2: str = "https://github.com/hansalemaos/uiautomator2tocsv/raw/refs/heads/main/app-uiautomator_with_hidden_elements.apk",
         uiautomator2_save_path1: str = "/sdcard/app-uiautomator-test.apk",
         uiautomator2_save_path2: str = "/sdcard/app-uiautomator.apk",
         lcp_deque_size: int = 40960,
@@ -1417,6 +1417,12 @@ class TermuxAutomation:
 
     def get_cmd_send_text_natural(self, text: str, **kwargs):
         return InputText(text, self.input_cmd_text, True)
+
+    def get_cmd_send_text_unicode(self, text: str, **kwargs):
+        return UnicodeInputText(self.sh_exe, text, False, kwargs)
+
+    def get_cmd_send_text_natural_unicode(self, text: str, **kwargs):
+        return UnicodeInputText(self.sh_exe, text, True, kwargs)
 
     def get_cmd_mouse_action(self, x: int, y: int, **kwargs):
         return MouseAction(

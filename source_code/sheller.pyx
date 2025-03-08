@@ -26,6 +26,7 @@ from contextlib import suppress as contextlib_suppress
 re.cache_all(True)
 
 
+
 class Tuppsub(tuple):
     pass
 
@@ -317,6 +318,8 @@ def nested_dict():
 @cython.wraparound(True)
 @cython.nonecheck(True)
 def dict_merger(*args):
+    cdef:
+        object newdict, it, p
     newdict = nested_dict()
     for it in args:
         for p in fla_tu(it):
@@ -1249,7 +1252,7 @@ cdef string convert_python_object_to_cpp_string(object shell_command):
         cpp_shell_command=<string>(tmp_bytes)
     return cpp_shell_command
 
-
+@cython.final
 cdef class CySubProc:
     cdef ShellProcessManager*subproc
 
@@ -1313,7 +1316,7 @@ cdef class CySubProc:
     def __dealloc__(self):
         del self.subproc
 
-
+@cython.final
 cdef class Shelly:
     cdef:
         string* finish_cmd_to_write

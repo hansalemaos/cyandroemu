@@ -1601,7 +1601,7 @@ int print_device_info=0,
 ```
 ***
 
-### ✍️ Using the System's `input` Command (Latin Letters with Accents Normalized)
+### ✍️ Using the System's `input` Command (Latin Letters with Accents Normalized) and/or Latin Chars
 
 ```py
 # Sends the whole text
@@ -1611,6 +1611,14 @@ cmd_send_text()
 # sends each text
 cmd_send_text_natural = te.get_cmd_send_text_natural("Hi there my frönd")
 cmd_send_text_natural()
+
+# sends each letter of the text - unicode - supports á, é, í, ó, ú, ý, Á, É, Í, Ó, Ú, Ý, ç, Ç, â, ê, î, ô, û, Â, Ê, Î, Ô, Û, ã, ñ, õ, Ã, Ñ, Õ, ß, ẞ, ä, ë, ï, ö, ü, ÿ, Ä, Ë, Ï, Ö, Ü, Ÿ, à, è, ì, ò, ù, À, È, Ì, Ò, Ù
+# Uses Androids input keycombination - contribs for more letters are welcome!
+cmd_send_text_natural_with_unicode = cyandro.get_cmd_send_text_unicode("Hi there my frönd")
+cmd_send_text_natural_with_unicode()
+
+cmd_send_text_natural_with_unicode_each_letter = cyandro.get_cmd_send_text_unicode_natural("Hi there my frönd")
+cmd_send_text_natural_with_unicode_each_letter()
 ```
 ***
 
