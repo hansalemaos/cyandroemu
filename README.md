@@ -74,7 +74,7 @@ Unlike any other Android automation library, **CyAndroEmu** is designed to run *
 
 ### Installation
 
-**1. Download and install your favorite Android emulator, and ensure it has root access. CyAndroEmu should also work on any rooted smartphone (not tested yet). A non-root version may be available in the future. CyAndroEmu has been tested with the following:**
+**1. Download and install your favorite Android emulator, and ensure it has root access. CyAndroEmu should also work on any rooted smartphone (not tested yet). A non-root version is available [here](https://github.com/hansalemaos/cyandrocel). CyAndroEmu has been tested with the following:**
   * [BlueStacks 5](https://www.bluestacks.com/)
   * [BlissOs 14, 15, 16 Go](https://blissos.org/) (on [ProxMox](https://www.proxmox.com/), [Virtual Box - Windows](https://www.virtualbox.org/) and [VMWare - Windows](https://www.vmware.com/))
   * [LDPlayer](https://ldplayer.net/)
