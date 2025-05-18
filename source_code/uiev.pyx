@@ -804,7 +804,16 @@ def get_part_of_screenshot(str cmd, int width, int height, list coords):
 
 
 ################################################# START Pandas Printer ####################################################################
-
+cdef:
+    list[str] colors2rotate=[
+        LightRed,
+        LightGreen,
+        LightYellow,
+        LightBlue,
+        LightMagenta,
+        LightCyan,
+        White,
+    ]
 @cython.nonecheck(True)
 def pdp(
     object df,
@@ -819,18 +828,15 @@ def pdp(
         dict[Py_ssize_t, np.ndarray] stringdict= {}
         dict[Py_ssize_t, Py_ssize_t] stringlendict= {}
         list[str] df_columns, allcolumns_as_string
-        list[str] colors2rotate=[
-        LightRed,
-        LightGreen,
-        LightYellow,
-        LightBlue,
-        LightMagenta,
-        LightCyan,
-        White,
-        ]
         Py_ssize_t i, len_a, len_df_columns, lenstr, counter, j, len_stringdict0, k, len_stringdict
         str stringtoprint, dashes, dashesrep
         np.ndarray a
+        str tmpstring=""
+        list[str] tmplist=[]
+        str tmp_newline="\n"
+        str tmp_rnewline="\r"
+        str tmp_newline2="\\n"
+        str tmp_rnewline2="\\r"
     if vtm_escape:
         print('\033[12:2p')
     if len(df) > max_lines and max_lines > 0:
@@ -847,9 +853,9 @@ def pdp(
     len_a=len(a)
     for i in range(len_a):
         try:
-            stringdict[i] = reprfunc(a[i]).astype("U")
+            stringdict[i] = np.array([repr(qx)[:max_colwidth] for qx in a[i]])
         except Exception:
-            stringdict[i] = asciifunc(a[i]).astype("U")
+            stringdict[i] = np.array([ascii(qx)[:max_colwidth] for qx in a[i]])
         stringlendict[i] = (stringdict[i].dtype.itemsize // 4) + ljust_space
     for i in range(len_a):
         lenstr = len(df_columns[i])
@@ -873,14 +879,15 @@ def pdp(
     for j in range(len_stringdict0):
         if column_rep > 0:
             if counter % column_rep == 0:
-                print(dashesrep)
+                tmplist.append(dashesrep)
         counter += 1
+        tmpstring=""
         for k in range(len_stringdict):
-            print((
-                colors2rotate[k % len(colors2rotate)] + stringdict[k][j][: stringlendict[k]].replace("\n",
-            "\\n").replace("\r", "\\r").ljust(stringlendict[k]) + ResetAll
-            ), end=sep)
-        print()
+            tmpstring+=((
+                f"{colors2rotate[k % len(colors2rotate)] + stringdict[k][j][: stringlendict[k]].replace(tmp_newline,tmp_newline2).replace(tmp_rnewline, tmp_rnewline2).ljust(stringlendict[k])}{ResetAll}{sep}"
+            ))
+        tmplist.append(tmpstring)
+    print("\n".join(tmplist))
     return ""
 
 def print_col_width_len(df):
